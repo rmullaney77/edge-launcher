@@ -37,15 +37,12 @@ namespace MIcrosoftEdgeLauncherCsharp
                         var url = args[0];
                         Debug.WriteLine("calling with url...");
                         Console.WriteLine(url);
-                        //check, if valid URL
-                        var regex = new Regex(@"^http\://[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(/\S*)?$");
-                        if (regex.IsMatch(url))
-                            launcher.ActivateApplication(EdgeName,
-                                url,
-                                ActivateOptions.None,
-                                out pid);
-                        else
-                            Console.WriteLine("Enter valid URL. f.e. http://www.bing.com");
+						//check for URL
+						var regex = new Regex(@"^(https?|ftp)\://.*$");
+						if (!regex.IsMatch(url))
+							//assume local file
+							url = "file://" + url;
+						launcher.ActivateApplication(EdgeName, url, ActivateOptions.None, out pid);
                         break;
                     }
                 default:
